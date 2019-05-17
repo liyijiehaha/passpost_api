@@ -98,7 +98,46 @@ class LoginController extends Controller
        }
        die(json_encode($reponse,JSON_UNESCAPED_UNICODE));
    }
-    public function user_token($id){
+   public function user_token($id){
         return $token=substr(md5($id.time().Str::random(10)),5,20);
+    }
+   public function addcart(Request $request){
+       $method='AES-256-CBC';
+       $key='xxyyzz';
+       $option=OPENSSL_RAW_DATA;
+       $iv='qwertyuiopasdfgh';
+       $res=file_get_contents("php://input");
+       $enc_str=base64_decode($res);
+       $arr=openssl_decrypt($enc_str,$method,$key,$option,$iv);
+       $data=json_decode($arr,true);
+       $user_id=$data['user_id'];
+       if($user_id == 'null') {
+           $reponse = [
+               'errno' => 70001,
+               'msg' => '请先登录',
+           ];
+           die(json_encode($reponse, JSON_UNESCAPED_UNICODE));
+       }
+       $data=[
+           'goods_id'=>$data['goods_id'],
+           'buy_number'=>$data['add_cart_num'],
+           'user_id'=>$user_id,
+           'cart_status'=>1,
+           'create_time'=>time(),
+       ];
+        $res=DB::table('api_cart')->insert($data);
+        if($res=='true'){
+            $reponse = [
+                'errno' => 0,
+                'msg' => '添加购物车成功',
+            ];
+            die(json_encode($reponse, JSON_UNESCAPED_UNICODE));
+        }else{
+            $reponse = [
+                'errno' =>70002,
+                'msg' => '添加购物车失败',
+            ];
+            die(json_encode($reponse, JSON_UNESCAPED_UNICODE));
+        }
     }
 }

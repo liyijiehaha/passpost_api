@@ -14,5 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+//注册
 Route::post('reg/regdo','LoginController@regdo');
+//登录
 Route::post('reg/logindo','LoginController@logindo');
+//个人中心
+//加入购物车
+Route::post('goods/addcart','LoginController@addcart');
