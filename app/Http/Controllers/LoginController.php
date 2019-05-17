@@ -126,7 +126,7 @@ class LoginController extends Controller
            'create_time'=>time(),
        ];
         $res=DB::table('api_cart')->insert($data);
-        if($res=='true'){
+        if($res){
             $reponse = [
                 'errno' => 0,
                 'msg' => '添加购物车成功',
