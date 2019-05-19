@@ -111,13 +111,6 @@ class LoginController extends Controller
        $arr=openssl_decrypt($enc_str,$method,$key,$option,$iv);
        $data=json_decode($arr,true);
        $user_id=$data['user_id'];
-       if($user_id == 'null') {
-           $reponse = [
-               'errno' => 70001,
-               'msg' => '请先登录',
-           ];
-           die(json_encode($reponse, JSON_UNESCAPED_UNICODE));
-       }
        $data=[
            'goods_id'=>$data['goods_id'],
            'buy_number'=>$data['add_cart_num'],
